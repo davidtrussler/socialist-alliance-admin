@@ -18,13 +18,25 @@ class SocAllAdmin {
 
 		/*
 		 * local
-		 */
 		$this->ser = '127.0.0.1';
 		$this->use = 'root';
 		$this->pas = '';
 		$this->dat = 'socialist_alliance';
-		
-		$this->mysqli = new mysqli($this->ser, $this->use, $this->pas, $this->dat);
+		 */
+
+		/*
+		 * JawsBD
+		 */
+		$url = getenv('JAWSDB_URL');
+		$dbparts = parse_url($url);
+
+		$hostname = $dbparts['host'];
+		$username = $dbparts['user'];
+		$password = $dbparts['pass'];
+		$database = ltrim($dbparts['path'],'/');
+
+		// $this->mysqli = new mysqli($this->ser, $this->use, $this->pas, $this->dat);
+		$this->mysqli = new mysqli($hostname, $username, $password, $database);
 	}
 
 	public function getLinkIds() {
