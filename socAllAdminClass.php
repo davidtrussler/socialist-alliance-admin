@@ -30,7 +30,10 @@ class SocAllAdmin {
 		 * JawsDB
 		 */
 		$dotenv = Dotenv\Dotenv::createUnsafeImmutable(__DIR__);
-		$dotenv->load();
+
+		if (file_exists('.env')) {
+			$dotenv->load();
+		}
 
 		$url = getenv('JAWSDB_URL');
 		$dbparts = parse_url($url);
