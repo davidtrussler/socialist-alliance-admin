@@ -1,5 +1,7 @@
 <?php
 
+require __DIR__ . '/vendor/autoload.php';
+
 class SocAllAdmin {
 	private $ser;	// server; 
 	private $use;	// userName
@@ -18,13 +20,30 @@ class SocAllAdmin {
 
 		/*
 		 * local
-		 */
 		$this->ser = '127.0.0.1';
 		$this->use = 'root';
 		$this->pas = '';
 		$this->dat = 'socialist_alliance';
-		
-		$this->mysqli = new mysqli($this->ser, $this->use, $this->pas, $this->dat);
+		 */
+
+		/*
+		 * JawsDB
+		 */
+		$dotenv = Dotenv\Dotenv::createUnsafeImmutable(__DIR__);
+
+		if (file_exists('.env')) {
+			$dotenv->load();
+		}
+
+		$url = getenv('JAWSDB_URL');
+		$dbparts = parse_url($url);
+
+		$this->ser = $dbparts['host'];
+		$this->use = $dbparts['user'];
+		$this->pas = $dbparts['pass'];
+		$this->dat = ltrim($dbparts['path'],'/');
+
+		@ $this->mysqli = new mysqli($this->ser, $this->use, $this->pas, $this->dat);
 	}
 
 	public function getLinkIds() {
